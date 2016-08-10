@@ -32,8 +32,13 @@
 			#frame {
 					width: 140%;
 					height: 140%;
-
-
+			}
+			#bar { 
+					width: 700px;
+					height: 50px;
+					position: absolute;
+					top: 13%;
+					left: 44%;
 
 			}
 		</style>
@@ -41,7 +46,8 @@
 	</head>
 
 	<body>
-		<input type="text" name="name" />
+		<!-- <input type="text" name="name" /> -->
+		<meter id="bar" max=100 min=0 value=0 ></meter>
 		<div id= "frame">
 			<div id= "counter">
 				Start counting! 
@@ -53,10 +59,20 @@
 			var buttonClicked 
 			var lastClick 
 			var hasFinished
-
+			var barPosition = 0 
+			var barCounting
 			
 			el.click( function (){
 				el.addClass("good")
+				clearInterval(barCounting)
+
+
+				barPosition=0
+				updateBar(0)
+				barCounting= setInterval(function(){
+					updateBar(barPosition++)
+
+				}, 30)
 				//	console.log ("hurray")
 				buttonClicked = Date.now()
 				if (hasFinished) {
@@ -85,7 +101,10 @@ console.log ("buttonClicked",(buttonClicked - lastClick) <3000)
 					lastClick = buttonClicked
 
 			});
+			var updateBar = function(value) {
+				$("#bar").val(value)
 
+			}
 
 		</script>
 	</body>
