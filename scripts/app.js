@@ -53,7 +53,7 @@ $(function() {
 	var startApplication = function() {
 		console.log('App started');
 
-		clickArea.click(function() {
+		clickArea.mousedown(function() {
 			// console.log('Clicked');
 
 			if (hasFinished) {
