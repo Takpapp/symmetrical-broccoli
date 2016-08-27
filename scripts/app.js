@@ -1,96 +1,118 @@
-// the amount of squats done
-var touchSquat = 0
-//
-var buttonClicked
-//
-var lastClick
-//
-var hasFinished
-//
-var startTime
-
-var warningsRemaining = 2
-
-var barPosition = 0
-var barCounting
-
-var updateBar = function(value) {
-	$('#bar').val(value)
-
-	if (value === 100) {
-		clearInterval(barCounting)
-	}
-}
-
-var updateTime = function() {
-	console.log('Updating time');
-	console.log('3-', moment().format('x') - startTime);
-	var duration = moment(moment().format('x') - startTime, 'x').format('mm[m] sS[s]');
-	$('#time').text(duration)
-	console.log('duration', duration);
-}
-
-var startApplication = function() {
-	console.log('App started');
-
+$(function() {
 	var clickArea = $('#body');
 	var counterArea = $('#counter');
 
-	clickArea.click(function() {
-		// console.log('Clicked');
+	// the amount of squats done
+	var touchSquat = 0
+	//
+	var buttonClicked
+	//
+	var lastClick
+	//
+	var hasFinished
+	//
+	var timerId
 
-		if (hasFinished) {
-			return
+	var warningsRemaining = 2
+
+	var barPosition = 0
+	var barCounting
+
+	var updateBar = function(value) {
+		$('#bar').val(value)
+
+		if (value === 100) {
+			checkFinish()
 		}
+	}
 
-		counterArea.addClass('good')
-		clearInterval(barCounting)
-		barPosition = 0
-		updateBar(0)
+	var checkFinish = function(decrement) {
+		console.error('Squat too slow! Chances left:', warningsRemaining)
 
-		barCounting = setInterval(function() {
-			updateBar(barPosition++)
-			updateTime()
-		}, 30)
-
-		buttonClicked = moment().format('x')
-
-		if (!lastClick) {
-			lastClick = moment().format('x')
-		}
-
-		if (!startTime) {
-			startTime = moment().format('x')
-			console.log('Setting start time:', startTime);
-		}
-
-		console.log('Time since last squat:', buttonClicked - lastClick)
-		console.log('Valid:', (buttonClicked - lastClick) < 3000)
-
-		//
-		// CHECK FOR FAILURES!
-		//
-		if ((buttonClicked - lastClick) < 3000) {
-			counterArea.text(touchSquat++)
+		if (warningsRemaining === 0) {
+			counterArea.addClass('failed')
+			counterArea.removeClass('good')
+			doFinish()
+			// clearInterval(barCounting)
 		} else {
-			if (warningsRemaining === 0) {
-				counterArea.addClass('failed')
-				counterArea.removeClass('good')
-				hasFinished = true
-				clearInterval(barCounting)
-			} else {
-				$('#messageBox').text('Chances left:' + warningsRemaining)
+			$('#messageBox').text('Chances left: ' + warningsRemaining)
+
+			if (decrement) {
 				warningsRemaining--
 			}
 		}
+	}
 
-		lastClick = buttonClicked
-	});
+	var doFinish = function() {
+		$('#messageBox').text('YOU ARE FINISHED')
+		window.clearInterval(barCounting)
+		window.clearInterval(timerId);
+		hasFinished = true
+	}
 
-}
+	// var updateTime = function() {
+	// 	console.log('Updating time');
+	// 	console.log('3-', moment().format('x') - startTime);
+	// 	var duration = moment(moment().format('x') - startTime, 'x').format('mm[m] sS[s]');
+	// 	$('#time').text(duration)
+	// 	console.log('duration', duration);
+	// }
 
-console.log('Script Loaded');
+	var startApplication = function() {
+		console.log('App started');
 
-$(function() {
+		clickArea.click(function() {
+			// console.log('Clicked');
+
+			if (hasFinished) {
+				return
+			}
+
+			counterArea.addClass('good')
+			clearInterval(barCounting)
+			barPosition = 0
+			updateBar(0)
+
+			barCounting = setInterval(function() {
+				updateBar(barPosition++)
+			}, 30)
+
+			buttonClicked = moment().format('x')
+
+			if (!lastClick) {
+				lastClick = moment().format('x')
+			}
+	console.log('1');
+			if (!timerId) {
+	console.log('2');
+				timerId =
+					countdown(
+						new Date(),
+						function(ts) {
+							$('#time').innerHTML = ts.toHTML("strong");
+						},
+						countdown.HOURS|countdown.MINUTES|countdown.SECONDS
+					);
+			}
+
+			console.log('Time since last squat:', buttonClicked - lastClick)
+			console.log('Valid:', (buttonClicked - lastClick) < 3000)
+
+			//
+			// CHECK FOR FAILURES!
+			//
+			if ((buttonClicked - lastClick) < 3000) {
+				counterArea.text(touchSquat++)
+			} else {
+				checkFinish(true)
+			}
+
+			lastClick = buttonClicked
+		});
+
+	}
+
+	console.log('Script Loaded');
+
 	startApplication()
 })
