@@ -35,7 +35,7 @@ $(function() {
 			doFinish()
 			// clearInterval(barCounting)
 		} else {
-			$('#messageBox').text('Chances left: ' + warningsRemaining)
+			$('#messageBox').text('Chances: ' + warningsRemaining)
 
 			if (decrement) {
 				warningsRemaining--
