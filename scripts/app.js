@@ -50,14 +50,6 @@ $(function() {
 		hasFinished = true
 	}
 
-	// var updateTime = function() {
-	// 	console.log('Updating time');
-	// 	console.log('3-', moment().format('x') - startTime);
-	// 	var duration = moment(moment().format('x') - startTime, 'x').format('mm[m] sS[s]');
-	// 	$('#time').text(duration)
-	// 	console.log('duration', duration);
-	// }
-
 	var startApplication = function() {
 		console.log('App started');
 
