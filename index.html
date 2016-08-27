@@ -47,9 +47,14 @@
 				/*background-color: red;*/
 			}
 
+            meter::-webkit-meter-even-less-good-value.failed{background:red;}
 			.failed {
+				/*-webkit-meter-even-less-good-value*/
+				/*-webkit-gradient(linear, left top, left bottom, from(#f77), to(#f77)*/
+                /*background: red;*/
+
 				/*border: 5px solid black;*/
-				/*background-color: black;*/
+				/*background-color: black;
 				/*color: white;*/
 			}
 
@@ -63,7 +68,7 @@
 	</head>
 
 	<body id="body">
-		<meter id="bar" max=100 min=0 value=0 ></meter>
+		<meter id="bar" class="failed" max=100 min=0 value=0 ></meter>
 		<!-- <input type="text" name="name" /> -->
 		<div id="counter" class="text">
 			Start!

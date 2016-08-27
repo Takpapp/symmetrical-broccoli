@@ -82,14 +82,13 @@ $(function() {
 			if (!lastClick) {
 				lastClick = moment().format('x')
 			}
-	console.log('1');
+
 			if (!timerId) {
-	console.log('2');
 				timerId =
 					countdown(
 						new Date(),
 						function(ts) {
-							$('#time').innerHTML = ts.toHTML("strong");
+							$('#time').text(ts);
 						},
 						countdown.HOURS|countdown.MINUTES|countdown.SECONDS
 					);
